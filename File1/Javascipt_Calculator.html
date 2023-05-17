@@ -34,53 +34,52 @@
     <button id="btn%" value= / class="p-3">%</button>
     <button id="btn=" value="=" class="p-3">=</button>
   </div>
-  <p id="result"></p>
+  <p id="result">0</p>
 </div>
 <script>
-  function test1() {
-    var buttonValue = parseInt(document.getElementById("btn0").value);
-    console.log(buttonValue);
-    window.alert("Button value: " + buttonValue);
+
+  var buttonIds = ["btn0", "btn1", "btn2", "btn3", "btn4", "btn5", "btn6", "btn7", "btn8", "btn9"];
+
+
+  for (var i = 0; i < buttonIds.length; i++) {
+    var buttonId = buttonIds[i];
+    document.getElementById(buttonId).addEventListener('click', function() {
+      var buttonValue = parseInt(this.value);
+      console.log(buttonValue);
+      updateResult(buttonValue);
+    });
   }
 
-  var pattern = ["0"];
-  var current = 0;
+  function updateResult(buttonValue) {
+    document.getElementById('result').innerHTML = buttonValue;
+    document.getElementById('result').style.display = "block";
+  }
 
-  var keyHandler = function(event) {
-    // If the key isn't in the pattern, or isn't the current key in the pattern, reset
-    if (pattern.indexOf(event.key) < 1 || event.key !== pattern[current]) {
-      current = 0;
-      return;
-    }
+  function testE() {
+    var result = parseInt(document.getElementById("btn=").value);
+    console.log(result);
+    updateResult(result);
+  }
 
-    // Update how much of the pattern is complete
-    current++;
+  document.getElementById("btn=").addEventListener('click', testE);
 
-    // If complete, alert and reset
-    if (pattern.length === current) {
-      current = 0;
-      window.alert( document.getElementById("btn0"));
-    }
-  };
-  // Listen for keydown events
-  document.addEventListener('keydown', keyHandler, false);
 
   // Add click event listener to the button
-  document.getElementById("btn0").addEventListener('click', test1);
-  document.getElementById("btn1").addEventListener('click', test1);
-  document.getElementById("btn2").addEventListener('click', test1);
-  document.getElementById("btn3").addEventListener('click', test1);
-  document.getElementById("btn4").addEventListener('click', test1);
-  document.getElementById("btn5").addEventListener('click', test1);
-  document.getElementById("btn6").addEventListener('click', test1);
-  document.getElementById("btn7").addEventListener('click', test1);
-  document.getElementById("btn8").addEventListener('click', test1);
-  document.getElementById("btn9").addEventListener('click', test1);
-  document.getElementById("btn+").addEventListener('click', test1);
-  document.getElementById("btn-").addEventListener('click', test1);
-  document.getElementById("btnx").addEventListener('click', test1);
-  document.getElementById("btn%").addEventListener('click', test1);
-  document.getElementById("btn=").addEventListener('click', test1);
+  document.getElementById("btn0").addEventListener('click');
+  document.getElementById("btn1").addEventListener('click');
+  document.getElementById("btn2").addEventListener('click');
+  document.getElementById("btn3").addEventListener('click');
+  document.getElementById("btn4").addEventListener('click');
+  document.getElementById("btn5").addEventListener('click');
+  document.getElementById("btn6").addEventListener('click');
+  document.getElementById("btn7").addEventListener('click');
+  document.getElementById("btn8").addEventListener('click');
+  document.getElementById("btn9").addEventListener('click');
+  document.getElementById("btn+").addEventListener('click');
+  document.getElementById("btn-").addEventListener('click');
+  document.getElementById("btnx").addEventListener('click');
+  document.getElementById("btn%").addEventListener('click');
+  document.getElementById("btn=").addEventListener('click', testE);
 </script>
 </body>
 </html>
