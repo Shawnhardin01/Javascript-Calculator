@@ -10,76 +10,129 @@
 
 <div class="d-flex flex-wrap flex-column  ">
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn0" value= 0 class="p-3">0</button>
-    <button id="btn1" value= 1 class="p-3">1</button>
-    <button id="btn2" value= 2 class="p-3">2</button>
+    <button id="btn0" value= 0 class="btn p-3 rounded btn-info border border-5">0</button>
+    <button id="btn1" value= 1 class="btn p-3 rounded btn-info border border-5">1</button>
+    <button id="btn2" value= 2 class="btn p-3 rounded btn-info border border-5">2</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn3" value= 3 class="p-3">3</button>
-    <button id="btn4" value= 4 class="p-3">4</button>
-    <button id="btn5" value= 5 class="p-3">5</button>
+    <button id="btn3" value= 3 class="btn p-3 rounded btn-info border border-5">3</button>
+    <button id="btn4" value= 4 class="btn p-3 rounded btn-info border border-5">4</button>
+    <button id="btn5" value= 5 class="btn p-3 rounded btn-info border border-5">5</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn6" value= 6 class="p-3">6</button>
-    <button id="btn7" value= 7 class="p-3">7</button>
-    <button id="btn8" value= 8 class="p-3">8</button>
+    <button id="btn6" value= 6 class="btn p-3 rounded btn-info border border-5">6</button>
+    <button id="btn7" value= 7 class="btn p-3 rounded btn-info border border-5">7</button>
+    <button id="btn8" value= 8 class="btn p-3 rounded btn-info border border-5">8</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn9" value= 9 class="p-3">9</button>
-    <button id="btn+" value= + class="p-3">+</button>
-    <button id="btn-" value= - class="p-3">-</button>
+    <button id="btn+" value= + class="btn p-3 rounded btn-info border border-5">+</button>
+    <button id="btn9" value= 9 class="btn p-3 rounded btn-info border border-5">9</button>
+    <button id="btn-" value= - class="btn p-3 rounded btn-info border border-5">-</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btnx" value= * class="p-3">x</button>
-    <button id="btn%" value= / class="p-3">%</button>
-    <button id="btn=" value="=" class="p-3">=</button>
+    <button id="btnx" value= * class="btn p-3 rounded btn-info border border-5">x</button>
+    <button id="btn%" value= / class="btn p-3 rounded btn-info border border-5">%</button>
+    <button id="btn=" value="=" class="btn p-3 rounded btn-info border border-5">=</button>
+    <button id="clear" class="btn p-2 rounded btn-info border border-5">Clear</button>
   </div>
   <p id="result">0</p>
 </div>
+
 <script>
+  var numbers = [];
+  var operator = null;
+  var isFirstNumber = true;
 
-  var buttonIds = ["btn0", "btn1", "btn2", "btn3", "btn4", "btn5", "btn6", "btn7", "btn8", "btn9"];
+  function updateResult() {
+    var result = numbers.join('');
+    document.getElementById('result').textContent = result;
+  }
 
+  function evaluateExpression() {
+    var result = 0;
+    if (numbers.length > 0 && !isFirstNumber) {
+      result = calculateResult();
+    }
+    document.getElementById('result').textContent = result;
+    numbers = [result.toString()];
+    operator = null;
+    isFirstNumber = true;
+  }
 
-  for (var i = 0; i < buttonIds.length; i++) {
-    var buttonId = buttonIds[i];
-    document.getElementById(buttonId).addEventListener('click', function() {
-      var buttonValue = parseInt(this.value);
-      console.log(buttonValue);
-      updateResult(buttonValue);
+  document.getElementById("btn=").addEventListener('click', evaluateExpression);
+
+  function calculateResult() {
+    var firstNumber = parseFloat(numbers[0]);
+    var secondNumber = parseFloat(numbers.slice(1).join(''));
+    var result = 0;
+    switch (operator) {
+      case '+':
+        result = firstNumber + secondNumber;
+        break;
+      case '-':
+        result = firstNumber - secondNumber;
+        break;
+      case 'x':
+        result = firstNumber * secondNumber;
+        break;
+      case '%':
+        result = firstNumber / secondNumber;
+        break;
+      default:
+        break;
+    }
+    return result;
+  }
+
+  function makeNumber() {
+    for (var i = 0; i <= 9; i++) {
+      document.getElementById("btn" + i).addEventListener('click', function() {
+        var buttonValue = this.value;
+        if (isFirstNumber) {
+          numbers.push(buttonValue);
+        } else {
+          numbers = [buttonValue];
+          isFirstNumber = true;
+        }
+        updateResult();
+      });
+    }
+
+    document.getElementById("btn+").addEventListener('click', function() {
+      if (!isFirstNumber) return;
+      operator = '+';
+      isFirstNumber = false;
+    });
+
+    document.getElementById("btn-").addEventListener('click', function() {
+      if (!isFirstNumber) return;
+      operator = '-';
+      isFirstNumber = false;
+    });
+
+    document.getElementById("btnx").addEventListener('click', function() {
+      if (!isFirstNumber) return;
+      operator = 'x';
+      isFirstNumber = false;
+    });
+
+    document.getElementById("btn%").addEventListener('click', function() {
+      if (!isFirstNumber) return;
+      operator = '%';
+      isFirstNumber = false;
     });
   }
 
-  function updateResult(buttonValue) {
-    document.getElementById('result').innerHTML = buttonValue;
-    document.getElementById('result').style.display = "block";
-  }
+  makeNumber();
 
-  function testE() {
-    var result = parseInt(document.getElementById("btn=").value);
-    console.log(result);
-    updateResult(result);
-  }
+  document.getElementById("clear").addEventListener('click', function() {
+    numbers = [];
+    operator = null;
+    isFirstNumber = true;
+    updateResult();
+  });
 
-  document.getElementById("btn=").addEventListener('click', testE);
-
-
-  // Add click event listener to the button
-  document.getElementById("btn0").addEventListener('click');
-  document.getElementById("btn1").addEventListener('click');
-  document.getElementById("btn2").addEventListener('click');
-  document.getElementById("btn3").addEventListener('click');
-  document.getElementById("btn4").addEventListener('click');
-  document.getElementById("btn5").addEventListener('click');
-  document.getElementById("btn6").addEventListener('click');
-  document.getElementById("btn7").addEventListener('click');
-  document.getElementById("btn8").addEventListener('click');
-  document.getElementById("btn9").addEventListener('click');
-  document.getElementById("btn+").addEventListener('click');
-  document.getElementById("btn-").addEventListener('click');
-  document.getElementById("btnx").addEventListener('click');
-  document.getElementById("btn%").addEventListener('click');
-  document.getElementById("btn=").addEventListener('click', testE);
 </script>
+
 </body>
 </html>
