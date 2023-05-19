@@ -6,120 +6,131 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 </head>
+<script src=../test/code.js></script>
+<link rel="stylesheet" href="style.css">
 <body>
 
-<div class="d-flex flex-wrap flex-column  ">
+<div class="holder d-flex flex-wrap flex-column ">
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn0" value= 0 class="btn p-3 rounded btn-info border border-5">0</button>
-    <button id="btn1" value= 1 class="btn p-3 rounded btn-info border border-5">1</button>
-    <button id="btn2" value= 2 class="btn p-3 rounded btn-info border border-5">2</button>
+    <button id="btn0" value= 0 class="btn p-3 rounded btn-info border border-5 border-dark">0</button>
+    <button id="btn1" value= 1 class="btn p-3 rounded btn-info border border-5 border-dark">1</button>
+    <button id="btn2" value= 2 class="btn p-3 rounded btn-info border border-5 border-dark">2</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn3" value= 3 class="btn p-3 rounded btn-info border border-5">3</button>
-    <button id="btn4" value= 4 class="btn p-3 rounded btn-info border border-5">4</button>
-    <button id="btn5" value= 5 class="btn p-3 rounded btn-info border border-5">5</button>
+    <button id="btn3" value= 3 class="btn p-3 rounded btn-info border border-5 border-dark">3</button>
+    <button id="btn4" value= 4 class="btn p-3 rounded btn-info border border-5 border-dark">4</button>
+    <button id="btn5" value= 5 class="btn p-3 rounded btn-info border border-5 border-dark">5</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn6" value= 6 class="btn p-3 rounded btn-info border border-5">6</button>
-    <button id="btn7" value= 7 class="btn p-3 rounded btn-info border border-5">7</button>
-    <button id="btn8" value= 8 class="btn p-3 rounded btn-info border border-5">8</button>
+    <button id="btn6" value= 6 class="btn p-3 rounded btn-info border border-5 border-dark">6</button>
+    <button id="btn7" value= 7 class="btn p-3 rounded btn-info border border-5 border-dark">7</button>
+    <button id="btn8" value= 8 class="btn p-3 rounded btn-info border border-5 border-dark">8</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btn+" value= + class="btn p-3 rounded btn-info border border-5">+</button>
-    <button id="btn9" value= 9 class="btn p-3 rounded btn-info border border-5">9</button>
-    <button id="btn-" value= - class="btn p-3 rounded btn-info border border-5">-</button>
+    <button id="btn+" value= + class="btn p-3 rounded btn-info border border-5 border-dark">+</button>
+    <button id="btn9" value= 9 class="btn p-3 rounded btn-info border border-5 border-dark">9</button>
+    <button id="btn-" value= - class="btn p-3 rounded btn-info border border-5 border-dark">-</button>
   </div>
   <div class="d-flex flex-wrap flex-row">
-    <button id="btnx" value= * class="btn p-3 rounded btn-info border border-5">x</button>
-    <button id="btn%" value= / class="btn p-3 rounded btn-info border border-5">%</button>
-    <button id="btn=" value="=" class="btn p-3 rounded btn-info border border-5">=</button>
-    <button id="clear" class="btn p-2 rounded btn-info border border-5">Clear</button>
+    <button id="btnx" value= * class="btn p-3 rounded btn-info border border-5 border-dark">x</button>
+    <button id="btn%" value= / class="btn p-3 rounded btn-info border border-5 border-dark">%</button>
+<!--    <button id="btn=" value="=" class="btn p-3 rounded btn-info border border-5">=</button>-->
+    <button id="clear" class="btn p-2 rounded btn-info border border-5 border-dark">Clr</button>
   </div>
-  <p id="result">0</p>
-</div>
 
+</div>
+<div>
+<p id="currentNumber"></p>
+<p id="result"></p>
+</div>
 <script>
   var numbers = [];
-  var operator = null;
-  var isFirstNumber = true;
+  var operator = '';
 
   function updateResult() {
-    var result = numbers.join('');
-    document.getElementById('result').textContent = result;
-  }
-
-  function evaluateExpression() {
     var result = 0;
-    if (numbers.length > 0 && !isFirstNumber) {
-      result = calculateResult();
+    if (numbers.length > 0) {
+      result = numbers.reduce((a, b) => evaluateExpression(a, b));
     }
     document.getElementById('result').textContent = result;
-    numbers = [result.toString()];
-    operator = null;
-    isFirstNumber = true;
   }
 
-  document.getElementById("btn=").addEventListener('click', evaluateExpression);
-
-  function calculateResult() {
-    var firstNumber = parseFloat(numbers[0]);
-    var secondNumber = parseFloat(numbers.slice(1).join(''));
+  function evaluateExpression(a, b) {
     var result = 0;
-    switch (operator) {
-      case '+':
-        result = firstNumber + secondNumber;
-        break;
-      case '-':
-        result = firstNumber - secondNumber;
-        break;
-      case 'x':
-        result = firstNumber * secondNumber;
-        break;
-      case '%':
-        result = firstNumber / secondNumber;
-        break;
-      default:
-        break;
+    if (numbers.length > 1) {
+      switch (operator) {
+        case '+':
+          result = a + b;
+          break;
+        case '-':
+          result = a - b;
+          break;
+        case 'x':
+          result = a * b;
+          break;
+        case '%':
+          result = a / b;
+          break;
+        default:
+          break;
+      }
     }
     return result;
   }
 
+  // document.getElementById("btn=").addEventListener('click', updateResult);
+
   function makeNumber() {
+    var currentNumber = "";
+    var currentNumberElement = document.getElementById("currentNumber");
+
     for (var i = 0; i <= 9; i++) {
       document.getElementById("btn" + i).addEventListener('click', function() {
-        var buttonValue = this.value;
-        if (isFirstNumber) {
-          numbers.push(buttonValue);
-        } else {
-          numbers = [buttonValue];
-          isFirstNumber = true;
-        }
+        var buttonValue = parseInt(this.value);
+        currentNumber += buttonValue; // Append the new digit to the current number
+        currentNumberElement.textContent = currentNumber; // Update the current number element
         updateResult();
       });
     }
 
     document.getElementById("btn+").addEventListener('click', function() {
-      if (!isFirstNumber) return;
+      if (currentNumber) {
+        numbers.push(parseFloat(currentNumber)); // Push the current number to the numbers array
+        currentNumber = ""; // Reset the current number
+        currentNumberElement.textContent = currentNumber; // Update the current number element
+      }
       operator = '+';
-      isFirstNumber = false;
+      updateResult();
     });
 
     document.getElementById("btn-").addEventListener('click', function() {
-      if (!isFirstNumber) return;
+      if (currentNumber) {
+        numbers.push(parseFloat(currentNumber));
+        currentNumber = "";
+        currentNumberElement.textContent = currentNumber;
+      }
       operator = '-';
-      isFirstNumber = false;
+      updateResult();
     });
 
     document.getElementById("btnx").addEventListener('click', function() {
-      if (!isFirstNumber) return;
+      if (currentNumber) {
+        numbers.push(parseFloat(currentNumber));
+        currentNumber = "";
+        currentNumberElement.textContent = currentNumber;
+      }
       operator = 'x';
-      isFirstNumber = false;
+      updateResult();
     });
 
     document.getElementById("btn%").addEventListener('click', function() {
-      if (!isFirstNumber) return;
+      if (currentNumber) {
+        numbers.push(parseFloat(currentNumber));
+        currentNumber = "";
+        currentNumberElement.textContent = currentNumber;
+      }
       operator = '%';
-      isFirstNumber = false;
+      updateResult();
     });
   }
 
@@ -127,12 +138,10 @@
 
   document.getElementById("clear").addEventListener('click', function() {
     numbers = [];
-    operator = null;
-    isFirstNumber = true;
+    operator = '';
+
     updateResult();
   });
-
 </script>
-
 </body>
 </html>
